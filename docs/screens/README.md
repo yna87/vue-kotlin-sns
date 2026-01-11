@@ -39,6 +39,7 @@ graph LR
 
 - **API 仕様**: [open-api.yaml](../open-api.yaml) - エンドポイントとデータ構造
 - **ER 図**: [er-diagram.md](../er-diagram.md) - データベース設計
+- **認証シーケンス**: [authentication.md](../sequences/authentication.md) - 認証処理のシーケンス図
 
 ## 変更履歴
 
