@@ -39,7 +39,10 @@ export const Basic: Story = {}
  */
 export const Healthy: Story = {
   args: {
-    getHealth: fn().mockResolvedValue({ status: 'healthy' }),
+    getHealth: fn(async () => ({
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+    })),
   },
   play: async ({ args, canvasElement, userEvent, step }) => {
     const canvas = within(canvasElement)
@@ -69,7 +72,9 @@ export const Healthy: Story = {
  */
 export const Unhealthy: Story = {
   args: {
-    getHealth: fn().mockRejectedValue(new Error()),
+    getHealth: fn(async () => {
+      throw new Error('API Error')
+    }),
   },
   play: async ({ args, canvasElement, userEvent, step }) => {
     const canvas = within(canvasElement)
