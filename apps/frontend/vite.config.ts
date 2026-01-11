@@ -2,7 +2,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
-import AutoImport from 'unplugin-auto-import/vite'
+import ui from '@nuxt/ui/vite'
 
 // https://vite.dev/config/
 import path from 'node:path'
@@ -19,9 +19,11 @@ export default defineConfig({
   plugins: [
     vue(),
     tailwindcss(),
-    AutoImport({
-      imports: ['vue'],
-      dts: './src/auto-imports.d.ts',
+    ui({
+      autoImport: {
+        imports: ['vue'],
+        dts: './src/auto-imports.d.ts',
+      },
     }),
   ],
   resolve: {

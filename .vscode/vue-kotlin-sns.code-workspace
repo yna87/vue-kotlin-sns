@@ -32,7 +32,17 @@
           "cmd": "./gradlew ktlintFormat -PinternalKtlintGitFilter=${file}"
         }
       ]
-    }
+    },
+    "files.associations": {
+      "*.css": "tailwindcss"
+    },
+    "editor.quickSuggestions": {
+      "strings": "on"
+    },
+    "tailwindCSS.classAttributes": ["class", "ui"],
+    "tailwindCSS.experimental.classRegex": [
+      ["ui:\\s*{([^)]*)\\s*}", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+    ]
   },
   "extensions": {
     "recommendations": [
@@ -43,7 +53,8 @@
       "ms-vscode.vscode-typescript-next",
       "bradlc.vscode-tailwindcss",
       "dbaeumer.vscode-eslint",
-      "esbenp.prettier-vscode"
+      "esbenp.prettier-vscode",
+      "bradlc.vscode-tailwindcss"
     ]
   }
 }
