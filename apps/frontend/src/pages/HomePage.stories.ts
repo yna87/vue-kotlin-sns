@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import HomePage from './HomePage.vue'
 import type { HealthResponse } from '@/types/health'
-import { expect, fn, within } from '@storybook/test'
+import { expect, fn, within } from 'storybook/test'
 import { provideApi } from '@/composables/useApi'
 
 type CustomArgs = InstanceType<typeof HomePage> & {

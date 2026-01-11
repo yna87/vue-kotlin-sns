@@ -1,4 +1,4 @@
-import { expect, fn, within } from '@storybook/test'
+import { expect, fn, within } from 'storybook/test'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import HelloWorld from './HelloWorld.vue'

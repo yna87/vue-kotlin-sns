@@ -1,5 +1,7 @@
 import { healthApi } from '@/api/health'
 import { postsApi } from '@/api/posts'
+import { merge } from 'es-toolkit'
+import type { DeepPartial } from '@/types/utils'
 
 export interface ApiContext {
   health: typeof healthApi
@@ -10,13 +12,16 @@ export const ApiContextKey: InjectionKey<ApiContext> = Symbol('ApiContext')
 
 /**
  * APIコンテキストを提供する
+ * @param mock - 部分的にオーバーライドするAPIメソッド（ネストされたオブジェクトも部分的にマージ）
  */
-export function provideApi(mock?: Partial<ApiContext>): void {
-  const context: ApiContext = {
+export function provideApi(mock: DeepPartial<ApiContext> = {}): void {
+  const defaultContext: ApiContext = {
     health: healthApi,
     posts: postsApi,
-    ...mock,
   }
+
+  const context = merge(defaultContext, mock)
+
   provide(ApiContextKey, context)
 }
 
