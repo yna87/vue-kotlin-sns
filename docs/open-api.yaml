@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Vue Kotlin Template API
   description: Vue Kotlin Templateの API
-  version: 1.0.0
+  version: 0.2.0
 
 servers:
   - url: http://localhost:8080
@@ -11,6 +11,8 @@ servers:
 tags:
   - name: Health
     description: ヘルスチェック関連
+  - name: Auth
+    description: 認証関連
   - name: Posts
     description: 投稿関連
 
@@ -33,6 +35,160 @@ paths:
                     type: string
                     example: healthy
 
+  /auth/signup:
+    post:
+      tags:
+        - Auth
+      summary: ユーザー登録
+      description: 新しいユーザーを登録します。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userName
+                - displayName
+                - password
+              properties:
+                userName:
+                  type: string
+                  description: ログインID（3〜50文字、英数字とアンダースコアのみ）
+                  minLength: 3
+                  maxLength: 50
+                  pattern: "^[a-zA-Z0-9_]+$"
+                  example: john_doe
+                displayName:
+                  type: string
+                  description: 表示名（1〜100文字）
+                  minLength: 1
+                  maxLength: 100
+                  example: John Doe
+                password:
+                  type: string
+                  description: パスワード（8文字以上推奨）
+                  minLength: 8
+                  format: password
+                  example: securePassword123
+      responses:
+        "201":
+          description: ユーザー登録成功
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - token
+                  - user
+                properties:
+                  token:
+                    type: string
+                    description: JWTアクセストークン
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  user:
+                    $ref: "#/components/schemas/User"
+        "400":
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                type: validationError
+                message: One or more fields have invalid values
+                details:
+                  - field: userName
+                    message: userName must be between 3 and 50 characters
+                  - field: password
+                    message: password must be at least 8 characters
+        "409":
+          description: ユーザー名が既に使用されています
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                type: duplicate
+                message: User name already exists
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: ログイン
+      description: ユーザー名とパスワードでログインし、JWTトークンを取得します。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userName
+                - password
+              properties:
+                userName:
+                  type: string
+                  description: ログインID
+                  example: john_doe
+                password:
+                  type: string
+                  description: パスワード
+                  format: password
+                  example: securePassword123
+      responses:
+        "200":
+          description: ログイン成功
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - token
+                  - user
+                properties:
+                  token:
+                    type: string
+                    description: JWTアクセストークン
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  user:
+                    $ref: "#/components/schemas/User"
+        "401":
+          description: 認証失敗（ユーザー名またはパスワードが間違っています）
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                type: unauthorized
+                message: Invalid user name or password
+
+  /auth/me:
+    get:
+      tags:
+        - Auth
+      summary: 現在のユーザー情報取得
+      description: JWTトークンから現在ログイン中のユーザー情報を取得します。
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: ユーザー情報取得成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: 認証失敗（トークンが無効または期限切れ）
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                type: invalidToken
+                message: Token is invalid or expired
+
   /posts:
     get:
       tags:
@@ -53,7 +209,9 @@ paths:
       tags:
         - Posts
       summary: 投稿作成
-      description: 新しい投稿を作成します。
+      description: 新しい投稿を作成します。認証が必要です。
+      security:
+        - BearerAuth: []
       requestBody:
         required: true
         content:
@@ -81,13 +239,50 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+              example:
+                type: validationError
+                message: One or more fields have invalid values
+                details:
+                  - field: content
+                    message: content must not be blank
+        "401":
+          description: 認証失敗（トークンが無効または期限切れ）
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                type: invalidToken
+                message: Token is invalid or expired
 
 components:
   schemas:
+    User:
+      type: object
+      required:
+        - id
+        - userName
+        - displayName
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ユーザーID（UUID v4）
+          example: 123e4567-e89b-12d3-a456-426614174000
+        userName:
+          type: string
+          description: ログインID
+          example: john_doe
+        displayName:
+          type: string
+          description: 表示名
+          example: John Doe
+
     Post:
       type: object
       required:
         - id
+        - user
         - content
         - createdAt
       properties:
@@ -96,6 +291,8 @@ components:
           format: uuid
           description: 投稿ID（UUID v4）
           example: 550e8400-e29b-41d4-a716-446655440000
+        user:
+          $ref: "#/components/schemas/User"
         content:
           type: string
           description: 投稿本文
@@ -116,7 +313,7 @@ components:
         type:
           type: string
           description: エラータイプ（camelCase形式）
-          example: invalidParameter
+          example: validationError
         message:
           type: string
           description: エラーメッセージ
@@ -138,3 +335,10 @@ components:
                 type: string
                 description: フィールド固有のエラーメッセージ
                 example: must not be blank
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "JWT認証。ヘッダーに `Authorization: Bearer {token}` を含めてください。"
