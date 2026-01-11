@@ -8,7 +8,6 @@ const meta = {
   component: PostForm,
   args: {
     isLoading: false,
-    error: null,
     submit: fn(),
     cancel: fn(),
   },

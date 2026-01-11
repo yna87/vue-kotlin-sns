@@ -23,6 +23,7 @@
   "dependencies": {
     "@nuxt/ui": "^4.3.0",
     "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/vue-query": "^5.92.5",
     "axios": "^1.13.2",
     "es-toolkit": "^1.43.0",
     "tailwindcss": "^4.1.18",

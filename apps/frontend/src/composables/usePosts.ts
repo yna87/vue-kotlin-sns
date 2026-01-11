@@ -1,36 +1,24 @@
-import axios from 'axios'
-import type { Post } from '@/types/post'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
+import type { PostCreateFormData } from '@/schemas/post'
 import { useApi } from './useApi'
 
-export function usePosts() {
+export function usePostsQuery() {
   const { posts: postsApi } = useApi()
 
-  const isLoading = ref(false)
-  const error = ref<string | null>(null)
-  const posts = ref<Post[]>([])
+  return useQuery({
+    queryKey: ['posts'],
+    queryFn: () => postsApi.getAll(),
+  })
+}
 
-  const fetchPosts = async () => {
-    isLoading.value = true
-    error.value = null
-    posts.value = []
+export function useCreatePostMutation() {
+  const { posts: postsApi } = useApi()
+  const queryClient = useQueryClient()
 
-    try {
-      posts.value = await postsApi.getAll()
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        error.value = '投稿の取得に失敗しました'
-      } else {
-        error.value = '予期しないエラーが発生しました'
-      }
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  return {
-    isLoading,
-    error,
-    posts,
-    fetchPosts,
-  }
+  return useMutation({
+    mutationFn: (formData: PostCreateFormData) => postsApi.create(formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] })
+    },
+  })
 }

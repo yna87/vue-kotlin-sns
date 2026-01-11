@@ -19,7 +19,6 @@ const meta = {
       },
     ],
     isLoading: false,
-    error: null,
   },
   render: (args) => ({
     components: { PostList },

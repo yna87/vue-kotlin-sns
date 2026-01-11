@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { usePosts } from '@/composables/usePosts'
+import { usePostsQuery } from '@/composables/usePosts'
+import { useErrorMessage } from '@/composables/useErrorMessage'
 import PostList from '@/components/PostList.vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const { isLoading, error, posts, fetchPosts } = usePosts()
+const { isLoading, error, data: posts } = usePostsQuery()
 
-onMounted(() => {
-  fetchPosts()
-})
+useErrorMessage(error, '投稿の取得に失敗しました', { useToast: true })
 
 const goToPostCreate = () => {
   router.push({ name: 'post-create' })
@@ -23,10 +22,8 @@ const goToPostCreate = () => {
     </div>
 
     <PostList
-      v-if="posts"
-      :posts="posts"
+      :posts="posts ?? []"
       :is-loading="isLoading"
-      :error="error"
     />
   </div>
 </template>
