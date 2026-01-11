@@ -8,9 +8,17 @@ servers:
   - url: http://localhost:8080
     description: ローカル開発環境
 
+tags:
+  - name: Health
+    description: ヘルスチェック関連
+  - name: Posts
+    description: 投稿関連
+
 paths:
   /health:
     get:
+      tags:
+        - Health
       summary: ヘルスチェック
       description: サービスの稼働状況を確認します。
       responses:
@@ -25,8 +33,80 @@ paths:
                     type: string
                     example: healthy
 
+  /posts:
+    get:
+      tags:
+        - Posts
+      summary: 投稿一覧取得
+      description: すべての投稿を新しい順で取得します。
+      responses:
+        "200":
+          description: 投稿一覧の取得に成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+
+    post:
+      tags:
+        - Posts
+      summary: 投稿作成
+      description: 新しい投稿を作成します。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+              properties:
+                content:
+                  type: string
+                  description: 投稿本文
+                  maxLength: 280
+                  example: これは投稿のテキストです
+      responses:
+        "201":
+          description: 投稿の作成に成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "400":
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
   schemas:
+    Post:
+      type: object
+      required:
+        - id
+        - content
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: 投稿ID（UUID v4）
+          example: 550e8400-e29b-41d4-a716-446655440000
+        content:
+          type: string
+          description: 投稿本文
+          maxLength: 280
+          example: これは投稿のテキストです
+        createdAt:
+          type: string
+          format: date-time
+          description: 投稿日時（ISO 8601形式）
+          example: "2026-01-11T10:30:00Z"
+
     ErrorResponse:
       type: object
       required:
@@ -53,7 +133,7 @@ components:
               field:
                 type: string
                 description: エラーが発生したフィールド名
-                example: title
+                example: content
               message:
                 type: string
                 description: フィールド固有のエラーメッセージ
