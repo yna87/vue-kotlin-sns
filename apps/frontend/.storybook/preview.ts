@@ -1,9 +1,11 @@
 import { setup, type Preview } from '@storybook/vue3-vite'
 import ui from '@nuxt/ui/vue-plugin'
+import { VueQueryPlugin } from '@tanstack/vue-query'
 import '../src/style.css'
 
 setup((app) => {
   app.use(ui)
+  app.use(VueQueryPlugin)
 })
 
 const preview: Preview = {
