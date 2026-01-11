@@ -4,8 +4,11 @@ import PostCreatePage from './PostCreatePage.vue'
 import type { Post, PostCreateRequest } from '@/types/post'
 import { expect, fn, within } from 'storybook/test'
 import { provideApi } from '@/composables/useApi'
+import { provideRouterMock } from '@/composables/useRouterMock'
+
 type CustomArgs = InstanceType<typeof PostCreatePage> & {
   createPost: (post: PostCreateRequest) => Promise<Post>
+  routerPush: ReturnType<typeof fn>
 }
 
 const meta = {
@@ -19,6 +22,7 @@ const meta = {
         createdAt: new Date().toISOString(),
       }
     }),
+    routerPush: fn(),
   },
   render: (args) => ({
     components: { PostCreatePage },
@@ -27,6 +31,9 @@ const meta = {
         posts: {
           create: args.createPost,
         },
+      })
+      provideRouterMock({
+        push: args.routerPush,
       })
       return { args }
     },
@@ -61,6 +68,30 @@ export const CreatePost: Story = {
       await expect(args.createPost).toHaveBeenCalledWith({
         content: 'これは新しい投稿です。',
       })
+    })
+
+    await step('タイムラインページへ遷移することを確認', async () => {
+      await expect(args.routerPush).toHaveBeenCalledOnce()
+      await expect(args.routerPush).toHaveBeenCalledWith({ name: 'timeline' })
+    })
+  },
+}
+
+/**
+ * キャンセルボタンをクリックして画面遷移するストーリー
+ */
+export const CancelNavigation: Story = {
+  play: async ({ args, canvasElement, userEvent, step }) => {
+    const canvas = within(canvasElement)
+
+    await step('キャンセルボタンをクリック', async () => {
+      const cancelButton = canvas.getByRole('button', { name: 'キャンセル' })
+      await userEvent.click(cancelButton)
+    })
+
+    await step('タイムラインページへ遷移することを確認', async () => {
+      await expect(args.routerPush).toHaveBeenCalledOnce()
+      await expect(args.routerPush).toHaveBeenCalledWith({ name: 'timeline' })
     })
   },
 }

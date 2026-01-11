@@ -2,11 +2,13 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import TimelinePage from './TimelinePage.vue'
 import type { Post } from '@/types/post'
-import { fn } from 'storybook/test'
+import { expect, fn, within } from 'storybook/test'
 import { provideApi } from '@/composables/useApi'
+import { provideRouterMock } from '@/composables/useRouterMock'
 
 type CustomArgs = InstanceType<typeof TimelinePage> & {
   getPosts: () => Promise<Post[]>
+  routerPush: ReturnType<typeof fn>
 }
 
 const meta = {
@@ -27,6 +29,7 @@ const meta = {
         },
       ]
     }),
+    routerPush: fn(),
   },
   render: (args) => ({
     components: { TimelinePage },
@@ -35,6 +38,9 @@ const meta = {
         posts: {
           getAll: args.getPosts,
         },
+      })
+      provideRouterMock({
+        push: args.routerPush,
       })
 
       return { args }
@@ -47,3 +53,24 @@ export default meta
 type Story = StoryObj<CustomArgs>
 
 export const Basic: Story = {}
+
+/**
+ * 投稿作成ページへ遷移するストーリー
+ */
+export const NavigateToPostCreate: Story = {
+  play: async ({ args, canvasElement, userEvent, step }) => {
+    const canvas = within(canvasElement)
+
+    await step('投稿するボタンをクリック', async () => {
+      const postButton = canvas.getByRole('button', { name: '投稿する' })
+      await userEvent.click(postButton)
+    })
+
+    await step('投稿作成ページへ遷移することを確認', async () => {
+      await expect(args.routerPush).toHaveBeenCalledOnce()
+      await expect(args.routerPush).toHaveBeenCalledWith({
+        name: 'post-create',
+      })
+    })
+  },
+}
