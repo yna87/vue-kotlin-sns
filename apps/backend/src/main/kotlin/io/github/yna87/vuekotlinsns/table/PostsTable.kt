@@ -9,7 +9,7 @@ import org.jetbrains.exposed.sql.javatime.timestampWithTimeZone
 object PostsTable : Table("posts") {
     val id = uuid("id").autoGenerate()
     val content = text("content")
-    val createdAt = timestampWithTimeZone("created_at")
+    val createdAt = timestampWithTimeZone("created_at").databaseGenerated()
 
     override val primaryKey = PrimaryKey(id)
 }

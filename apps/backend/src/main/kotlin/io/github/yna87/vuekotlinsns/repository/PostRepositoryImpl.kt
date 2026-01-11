@@ -4,7 +4,7 @@ import io.github.yna87.vuekotlinsns.entity.Post
 import io.github.yna87.vuekotlinsns.table.PostsTable
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder
-import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertReturning
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Repository
@@ -25,13 +25,12 @@ class PostRepositoryImpl : PostRepository {
     override fun create(content: String): Post =
         transaction {
             PostsTable
-                .insert {
+                .insertReturning {
                     it[PostsTable.content] = content
                     // id, createdAtはDB側のDEFAULT値を使用
-                }.resultedValues
-                ?.single()
-                ?.toPost()
-                ?: throw IllegalStateException("Failed to insert post")
+                }
+                .single()
+                .toPost()
         }
 
     /**
