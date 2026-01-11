@@ -1,0 +1,67 @@
+name: ci-frontend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/frontend/**'
+      - '.github/workflows/ci-frontend.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/frontend/**'
+      - '.github/workflows/ci-frontend.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.24.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+          cache-dependency-path: apps/frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache Vite build
+        uses: actions/cache@v4
+        with:
+          path: apps/frontend/node_modules/.vite
+          key: ${{ runner.os }}-vite-${{ hashFiles('apps/frontend/pnpm-lock.yaml', 'apps/frontend/vite.config.ts') }}
+          restore-keys: |
+            ${{ runner.os }}-vite-
+
+      - name: Cache Vitest
+        uses: actions/cache@v4
+        with:
+          path: apps/frontend/node_modules/.vitest
+          key: ${{ runner.os }}-vitest-${{ hashFiles('apps/frontend/pnpm-lock.yaml', 'apps/frontend/vite.config.ts') }}
+          restore-keys: |
+            ${{ runner.os }}-vitest-
+
+      - name: Type check
+        run: pnpm run type-check
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Run unit tests
+        run: pnpm run test:unit
+
+      - name: Build
+        run: pnpm run build

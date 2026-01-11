@@ -1,0 +1,2 @@
+-- Initial migration
+-- No tables needed for health check API

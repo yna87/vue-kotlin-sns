@@ -1,0 +1,60 @@
+openapi: 3.0.3
+info:
+  title: Vue Kotlin Template API
+  description: Vue Kotlin Templateの API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: ローカル開発環境
+
+paths:
+  /health:
+    get:
+      summary: ヘルスチェック
+      description: サービスの稼働状況を確認します。
+      responses:
+        "200":
+          description: サービスは稼働中です。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - type
+        - message
+      properties:
+        type:
+          type: string
+          description: エラータイプ（camelCase形式）
+          example: invalidParameter
+        message:
+          type: string
+          description: エラーメッセージ
+          example: One or more fields have invalid values
+        details:
+          type: array
+          description: エラー詳細（バリデーションエラーなど）
+          items:
+            type: object
+            required:
+              - field
+              - message
+            properties:
+              field:
+                type: string
+                description: エラーが発生したフィールド名
+                example: title
+              message:
+                type: string
+                description: フィールド固有のエラーメッセージ
+                example: must not be blank

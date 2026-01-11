@@ -1,0 +1,66 @@
+name: ci-storybook
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/frontend/**'
+      - '.github/workflows/ci-storybook.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/frontend/**'
+      - '.github/workflows/ci-storybook.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.24.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+          cache-dependency-path: apps/frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('apps/frontend/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Cache Vite build
+        uses: actions/cache@v4
+        with:
+          path: apps/frontend/node_modules/.vite
+          key: ${{ runner.os }}-vite-storybook-${{ hashFiles('apps/frontend/pnpm-lock.yaml', 'apps/frontend/vite.config.ts', 'apps/frontend/.storybook/**') }}
+          restore-keys: |
+            ${{ runner.os }}-vite-storybook-
+
+      - name: Build Storybook
+        run: pnpm run build-storybook
+
+      - name: Run Storybook tests
+        run: pnpm run test:storybook

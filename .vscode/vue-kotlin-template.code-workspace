@@ -1,0 +1,49 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": ".."
+    },
+    {
+      "name": "frontend",
+      "path": "../apps/frontend"
+    },
+    {
+      "name": "backend",
+      "path": "../apps/backend"
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[vue]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "files.autoSave": "onFocusChange",
+    "kotlin.compiler.jvm.target": "21",
+    "typescript.tsdk": "frontend/node_modules/typescript/lib",
+    "[kotlin]": {
+      "editor.formatOnSave": false
+    },
+    "emeraldwalk.runonsave": {
+      "commands": [
+        {
+          "match": "\\.kt$",
+          "cmd": "./gradlew ktlintFormat -PinternalKtlintGitFilter=${file}"
+        }
+      ]
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "eamodio.gitlens",
+      "mhutchie.git-graph",
+      "vue.volar",
+      "antfu.vite",
+      "ms-vscode.vscode-typescript-next",
+      "bradlc.vscode-tailwindcss",
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode"
+    ]
+  }
+}
