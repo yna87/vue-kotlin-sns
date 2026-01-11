@@ -22,8 +22,8 @@ const onSubmit = (event: FormSubmitEvent<PostCreateFormData>) => {
   <div class="space-y-4">
     <UAlert
       v-if="error"
-      color="red"
-      variant="solid"
+      color="error"
+      variant="subtle"
       :title="error"
     />
 
