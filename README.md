@@ -1,85 +1,76 @@
-# Vue Kotlin Template
+# Vue Kotlin SNS
 
-Vue 3 + Kotlin/Spring Boot によるフルスタックアプリケーションのテンプレートリポジトリです。
+Vue 3 + Kotlin/Spring Boot によるシンプルな SNS アプリケーションです。
 
-## 特徴
+## 機能
 
-このテンプレートには以下のツールと設定が含まれています：
+- ユーザー認証（JWT）
+  - サインアップ
+  - ログイン
+  - ログアウト
+- 投稿機能
+  - 投稿作成（最大280文字）
+  - タイムライン表示（新しい順）
+
+## 技術スタック
 
 ### フロントエンド (`apps/frontend`)
 
-- **Vue 3** - プログレッシブフレームワーク
-- **TypeScript** - 型安全な開発環境
-- **Vite** - 高速なビルドツール
-- **Tailwind CSS v4** - ユーティリティファーストの CSS フレームワーク
-- **Vitest** - 高速なユニットテストフレームワーク
-  - Vue Test Utils - Vue コンポーネントのテストユーティリティ
-  - Playwright - ブラウザテスト環境
-- **Storybook** - UI コンポーネント開発・テスト環境
-  - Storybook Test (addon-vitest) - ストーリーベースのテスト
-- **ESLint** - コード品質チェック
-- **Prettier** - コードフォーマッター
-- **pnpm** - 高速で効率的なパッケージマネージャー
+**コアフレームワーク**
+- Vue 3 + TypeScript + Vite
+- Vue Router
+- TanStack Query (Vue Query)
+
+**UI/スタイリング**
+- Nuxt UI + Tailwind CSS v4
+
+**開発ツール**
+- Vitest + Storybook (テスト・コンポーネント開発)
+- ESLint + Prettier (コード品質・フォーマット)
+- pnpm (パッケージマネージャー)
 
 ### バックエンド (`apps/backend`)
 
-- **Spring Boot 4.0.1** - エンタープライズ対応フレームワーク
-- **Kotlin 2.2.20** - モダンな JVM 言語
-- **Java 21** - 最新の LTS バージョン
-- **PostgreSQL** - リレーショナルデータベース
-- **Flyway** - データベースマイグレーション
-- **Exposed** - Kotlin ネイティブな ORM フレームワーク（型安全な SQL DSL）
-- **Jakarta Bean Validation** - アノテーションベースのバリデーション
-- **Gradle** - ビルドツール
-- **ktlint** - Kotlin コードフォーマッター
-- **detekt** - Kotlin 静的解析ツール
+**コアフレームワーク**
+- Spring Boot 4.0.1 + Kotlin 2.2.20 + Java 21
 
-## このテンプレートの使い方
+**データベース**
+- PostgreSQL + Exposed (ORM) + Flyway (マイグレーション)
 
-### GitHub でテンプレートリポジトリとして使用する
+**認証・セキュリティ**
+- JWT + BCrypt
 
-1. このリポジトリのページで「Use this template」ボタンをクリック
-2. 新しいリポジトリ名を入力して作成
-3. 作成したリポジトリをクローン
+**開発ツール**
+- Gradle (ビルドツール)
+- ktlint + detekt (コード品質・静的解析)
 
-```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-cd YOUR_REPO_NAME
-```
-
-### 前提条件
+## 前提条件
 
 - Node.js（推奨バージョンは `.node-version` に記載）
 - pnpm 10.24.0 以上
 - Java 21
 - PostgreSQL
 
-### ローカルでセットアップ
+## セットアップ
 
-#### 1. データベースの作成
+### 1. データベースの作成
 
 バックエンドを起動する前に、PostgreSQL でデータベースを作成してください：
 
 ```bash
 # 方法1: psqlコマンドから
 psql postgres
-CREATE DATABASE vue_kotlin_template;
+CREATE DATABASE vue_kotlin_sns;
 \l  # データベース一覧を確認
 \q  # 終了
 
 # 方法2: createdbコマンド
-createdb vue_kotlin_template
-```
-
-または、既存のユーザーを使用する場合は、データベースのみ作成：
-
-```bash
-psql -U postgres -c "CREATE DATABASE vuekotlintemplate;"
+createdb vue_kotlin_sns
 ```
 
 **注意**: データベース名とユーザー名は `apps/backend/src/main/resources/application.yaml` の設定と一致させてください。
 
-#### 2. フロントエンド
+### 2. フロントエンド
 
 ```bash
 cd apps/frontend
@@ -91,7 +82,7 @@ pnpm install
 pnpm dev
 ```
 
-#### 3. バックエンド
+### 3. バックエンド
 
 ```bash
 cd apps/backend
@@ -177,7 +168,7 @@ cd apps/backend
 ## プロジェクト構成
 
 ```
-vue-kotlin-template/
+vue-kotlin-sns/
 ├── apps/
 │   ├── frontend/                      # Vue フロントエンドアプリケーション
 │   │   ├── src/
@@ -205,61 +196,23 @@ vue-kotlin-template/
 │       ├── build.gradle.kts           # ビルド設定
 │       └── settings.gradle.kts
 │
+├── docs/                              # 設計ドキュメント
+│   ├── er-diagram.md                  # ER図
+│   ├── open-api.yaml                  # API仕様
+│   ├── screens/                       # 画面設計
+│   └── sequences/                     # シーケンス図
 ├── .github/                           # GitHub Actions workflows
 └── .vscode/                           # VSCode 設定
 ```
 
-## 初期設定とカスタマイズ
+## ドキュメント
 
-このテンプレートを使用する際は、以下の項目をプロジェクトに合わせてカスタマイズしてください：
+詳細な設計ドキュメントは `docs/` ディレクトリにあります：
 
-### 必須のカスタマイズ
-
-テンプレートを使用する際は、以下の項目を必ず変更してください：
-
-#### バックエンドの package 名の変更
-
-現在の package 名 `io.github.yna87.vuekotlintemplate` を自分のプロジェクトに合わせて変更します。
-
-1. ディレクトリ構造を変更:
-
-   ```bash
-   # 例: io.yourname.yourproject に変更する場合
-   cd apps/backend/src/main/kotlin
-   mkdir -p io/yourname/yourproject
-   mv io/github/yna87/vuekotlintemplate/* io/yourname/yourproject/
-   rm -rf io/github
-
-   # テストコードも同様に
-   cd ../../../test/kotlin
-   mkdir -p io/yourname/yourproject
-   mv io/github/yna87/vuekotlintemplate/* io/yourname/yourproject/
-   rm -rf io/github
-   ```
-
-2. すべての `.kt` ファイルの `package` 宣言を変更:
-   - `apps/backend/src/main/kotlin/**/*.kt`
-   - `apps/backend/src/test/kotlin/**/*.kt`
-   - 各ファイルの先頭の `package io.github.yna87.vuekotlintemplate` を新しい package 名に変更
-
-#### プロジェクト名の変更
-
-1. **バックエンド**
-
-   - `apps/backend/build.gradle.kts`:
-     - `group = "com.example"` → 自分の group ID に変更
-     - `description = "Vue Kotlin Template"` → プロジェクトの説明に変更
-
-#### データベース設定の変更
-
-`apps/backend/src/main/resources/application.yaml` を環境に合わせて変更:
-
-```yaml
-datasource:
-  url: jdbc:postgresql://localhost:5432/vuekotlintemplate # データベース名を変更
-  username: yna87 # データベースユーザー名を変更
-  password: # パスワードを設定
-```
+- [ER図](docs/er-diagram.md) - データベース設計
+- [API仕様](docs/open-api.yaml) - OpenAPI 3.0形式のAPI仕様
+- [画面設計](docs/screens/README.md) - 画面構成と遷移
+- [認証シーケンス](docs/sequences/authentication.md) - JWT認証のシーケンス図
 
 ## ライセンス
 
