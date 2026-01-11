@@ -1,4 +1,4 @@
-package io.github.yna87.vuekotlintemplate
+package io.github.yna87.vuekotlinsns
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.SpringBootApplication

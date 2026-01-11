@@ -1,7 +1,7 @@
-package io.github.yna87.vuekotlintemplate.controller
+package io.github.yna87.vuekotlinsns.controller
 
-import io.github.yna87.vuekotlintemplate.dto.ErrorResponse
-import io.github.yna87.vuekotlintemplate.dto.FieldError
+import io.github.yna87.vuekotlinsns.dto.ErrorResponse
+import io.github.yna87.vuekotlinsns.dto.FieldError
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

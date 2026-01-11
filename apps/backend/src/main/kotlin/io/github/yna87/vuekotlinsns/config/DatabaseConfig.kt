@@ -1,4 +1,4 @@
-package io.github.yna87.vuekotlintemplate.config
+package io.github.yna87.vuekotlinsns.config
 
 import org.jetbrains.exposed.sql.Database
 import org.springframework.context.annotation.Bean

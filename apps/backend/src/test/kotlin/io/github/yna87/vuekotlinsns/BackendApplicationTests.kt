@@ -1,4 +1,4 @@
-package io.github.yna87.vuekotlintemplate
+package io.github.yna87.vuekotlinsns
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

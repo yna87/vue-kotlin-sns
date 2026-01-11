@@ -1,4 +1,4 @@
-package io.github.yna87.vuekotlintemplate.dto
+package io.github.yna87.vuekotlinsns.dto
 
 import com.fasterxml.jackson.annotation.JsonInclude
 

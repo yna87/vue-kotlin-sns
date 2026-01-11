@@ -250,10 +250,6 @@ vue-kotlin-template/
      - `group = "com.example"` → 自分の group ID に変更
      - `description = "Vue Kotlin Template"` → プロジェクトの説明に変更
 
-2. **フロントエンド**
-   - `apps/frontend/package.json`:
-     - `"name": "vue-kotlin-template"` → プロジェクト名に変更
-
 #### データベース設定の変更
 
 `apps/backend/src/main/resources/application.yaml` を環境に合わせて変更:
