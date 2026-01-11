@@ -18,15 +18,24 @@ defineProps<{
       :title="error"
     />
 
-    <div v-if="isLoading" class="text-center py-8">
+    <div
+      v-if="isLoading"
+      class="text-center py-8"
+    >
       <p class="text-gray-500">読み込み中...</p>
     </div>
 
-    <div v-else-if="posts.length === 0 && !error" class="text-center py-8">
+    <div
+      v-else-if="posts.length === 0 && !error"
+      class="text-center py-8"
+    >
       <p class="text-gray-500">投稿がまだありません</p>
     </div>
 
-    <div v-else class="space-y-4">
+    <div
+      v-else
+      class="space-y-4"
+    >
       <PostCard
         v-for="post in posts"
         :key="post.id"
