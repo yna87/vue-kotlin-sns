@@ -1,6 +1,9 @@
 import { healthApi } from '@/api/health'
+import { postsApi } from '@/api/posts'
+
 export interface ApiContext {
   health: typeof healthApi
+  posts: typeof postsApi
 }
 
 export const ApiContextKey: InjectionKey<ApiContext> = Symbol('ApiContext')
@@ -11,6 +14,7 @@ export const ApiContextKey: InjectionKey<ApiContext> = Symbol('ApiContext')
 export function provideApi(mock?: Partial<ApiContext>): void {
   const context: ApiContext = {
     health: healthApi,
+    posts: postsApi,
     ...mock,
   }
   provide(ApiContextKey, context)
