@@ -23,6 +23,7 @@ declare module 'vue' {
     UCard: typeof import('./node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/components/Card.vue')['default']
     UForm: typeof import('./node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/components/Form.vue')['default']
     UFormField: typeof import('./node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/components/FormField.vue')['default']
+    UInput: typeof import('./node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/components/Input.vue')['default']
     UTextarea: typeof import('./node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/components/Textarea.vue')['default']
   }
 }
