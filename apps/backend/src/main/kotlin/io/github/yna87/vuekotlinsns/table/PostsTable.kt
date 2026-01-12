@@ -8,6 +8,7 @@ import org.jetbrains.exposed.sql.javatime.timestampWithTimeZone
  */
 object PostsTable : Table("posts") {
     val id = uuid("id").autoGenerate()
+    val userId = uuid("user_id").references(UsersTable.id)
     val content = text("content")
     val createdAt = timestampWithTimeZone("created_at").databaseGenerated()
 

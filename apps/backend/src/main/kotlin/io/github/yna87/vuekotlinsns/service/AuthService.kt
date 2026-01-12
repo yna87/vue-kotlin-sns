@@ -7,7 +7,7 @@ import io.github.yna87.vuekotlinsns.dto.UserResponse
 import io.github.yna87.vuekotlinsns.exception.DuplicateResourceException
 import io.github.yna87.vuekotlinsns.exception.UnauthorizedException
 import io.github.yna87.vuekotlinsns.repository.UserRepository
-import io.github.yna87.vuekotlinsns.util.JwtUtil
+import io.github.yna87.vuekotlinsns.security.JwtUtil
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 

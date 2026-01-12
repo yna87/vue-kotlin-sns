@@ -1,4 +1,4 @@
-package io.github.yna87.vuekotlinsns.util
+package io.github.yna87.vuekotlinsns.security
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.JwtException

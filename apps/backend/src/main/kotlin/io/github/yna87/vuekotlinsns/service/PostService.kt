@@ -3,6 +3,7 @@ package io.github.yna87.vuekotlinsns.service
 import io.github.yna87.vuekotlinsns.entity.Post
 import io.github.yna87.vuekotlinsns.repository.PostRepository
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 /**
  * 投稿サービス
@@ -21,8 +22,12 @@ class PostService(
     /**
      * 新しい投稿を作成
      *
+     * @param userId 投稿者のユーザーID
      * @param content 投稿本文
      * @return 作成された投稿
      */
-    fun createPost(content: String): Post = postRepository.create(content)
+    fun createPost(
+        userId: UUID,
+        content: String,
+    ): Post = postRepository.create(userId, content)
 }

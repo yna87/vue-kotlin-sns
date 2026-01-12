@@ -11,6 +11,7 @@ data class PostResponse(
     val id: UUID,
     val content: String,
     val createdAt: OffsetDateTime,
+    val user: UserResponse,
 ) {
     companion object {
         /**
@@ -21,6 +22,7 @@ data class PostResponse(
                 id = post.id,
                 content = post.content,
                 createdAt = post.createdAt,
+                user = UserResponse.from(post.user),
             )
     }
 }

@@ -45,8 +45,8 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")
 
-    // BCrypt (Spring Security Crypto)
-    implementation("org.springframework.security:spring-security-crypto")
+    // Spring Security (includes BCrypt and Web Security)
+    implementation("org.springframework.boot:spring-boot-starter-security")
 
     // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")

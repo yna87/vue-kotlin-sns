@@ -2,9 +2,11 @@ package io.github.yna87.vuekotlinsns.controller
 
 import io.github.yna87.vuekotlinsns.dto.PostRequest
 import io.github.yna87.vuekotlinsns.dto.PostResponse
+import io.github.yna87.vuekotlinsns.security.UserPrincipal
 import io.github.yna87.vuekotlinsns.service.PostService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -31,15 +33,17 @@ class PostController(
     /**
      * 投稿作成
      *
+     * @param userPrincipal 認証済みユーザー情報
      * @param request 投稿作成リクエスト
      * @return 作成された投稿
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createPost(
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @Valid @RequestBody request: PostRequest,
     ): PostResponse {
-        val post = postService.createPost(request.content)
+        val post = postService.createPost(userPrincipal.userId, request.content)
         return PostResponse.from(post)
     }
 }

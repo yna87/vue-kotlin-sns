@@ -8,6 +8,8 @@ import java.util.UUID
  */
 data class Post(
     val id: UUID,
+    val userId: UUID,
     val content: String,
     val createdAt: OffsetDateTime,
+    val user: User,
 )

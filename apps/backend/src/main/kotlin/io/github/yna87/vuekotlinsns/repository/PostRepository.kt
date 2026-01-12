@@ -1,6 +1,7 @@
 package io.github.yna87.vuekotlinsns.repository
 
 import io.github.yna87.vuekotlinsns.entity.Post
+import java.util.UUID
 
 /**
  * 投稿リポジトリインターフェース
@@ -16,8 +17,12 @@ interface PostRepository {
     /**
      * 新しい投稿を作成
      *
+     * @param userId 投稿者のユーザーID
      * @param content 投稿本文
      * @return 作成された投稿
      */
-    fun create(content: String): Post
+    fun create(
+        userId: UUID,
+        content: String,
+    ): Post
 }
