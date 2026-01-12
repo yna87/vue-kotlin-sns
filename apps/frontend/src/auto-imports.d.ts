@@ -101,10 +101,32 @@ declare global {
 // for type re-export
 declare global {
   // @ts-ignore
-  export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, ShallowRef, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
+  export type {
+    Component,
+    Slot,
+    Slots,
+    ComponentPublicInstance,
+    ComputedRef,
+    DirectiveBinding,
+    ExtractDefaultPropTypes,
+    ExtractPropTypes,
+    ExtractPublicPropTypes,
+    InjectionKey,
+    PropType,
+    Ref,
+    ShallowRef,
+    MaybeRef,
+    MaybeRefOrGetter,
+    VNode,
+    WritableComputedRef,
+  } from 'vue'
   import('vue')
   // @ts-ignore
-  export type { ShortcutConfig, ShortcutsConfig, ShortcutsOptions } from '../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/defineShortcuts.d'
+  export type {
+    ShortcutConfig,
+    ShortcutsConfig,
+    ShortcutsOptions,
+  } from '../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/defineShortcuts.d'
   import('../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/defineShortcuts.d')
   // @ts-ignore
   export type { UseComponentIconsProps } from '../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/useComponentIcons.d'
@@ -116,13 +138,22 @@ declare global {
   export type { UseFileUploadOptions } from '../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/useFileUpload.d'
   import('../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/useFileUpload.d')
   // @ts-ignore
-  export type { KbdKey, KbdKeySpecific } from '../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/useKbd.d'
+  export type {
+    KbdKey,
+    KbdKeySpecific,
+  } from '../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/useKbd.d'
   import('../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/useKbd.d')
   // @ts-ignore
-  export type { OverlayOptions, Overlay } from '../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/useOverlay.d'
+  export type {
+    OverlayOptions,
+    Overlay,
+  } from '../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/useOverlay.d'
   import('../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/useOverlay.d')
   // @ts-ignore
-  export type { UseResizableProps, UseResizableReturn } from '../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/useResizable.d'
+  export type {
+    UseResizableProps,
+    UseResizableReturn,
+  } from '../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/useResizable.d'
   import('../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/useResizable.d')
   // @ts-ignore
   export type { Toast } from '../node_modules/.pnpm/@nuxt+ui@4.3.0_@babel+parser@7.28.5_@floating-ui+dom@1.7.4_@tiptap+extension-drag-handl_3bbc7eb213cb01ee91de2c6df5db8ff2/node_modules/@nuxt/ui/dist/runtime/composables/useToast.d'
