@@ -5,11 +5,13 @@ import io.github.yna87.vuekotlinsns.dto.LoginRequest
 import io.github.yna87.vuekotlinsns.dto.SignupRequest
 import io.github.yna87.vuekotlinsns.dto.UserResponse
 import io.github.yna87.vuekotlinsns.exception.DuplicateResourceException
+import io.github.yna87.vuekotlinsns.exception.ResourceNotFoundException
 import io.github.yna87.vuekotlinsns.exception.UnauthorizedException
 import io.github.yna87.vuekotlinsns.repository.UserRepository
 import io.github.yna87.vuekotlinsns.security.JwtUtil
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 /**
  * 認証サービス
@@ -79,5 +81,20 @@ class AuthService(
             token = token,
             user = UserResponse.from(user),
         )
+    }
+
+    /**
+     * 現在のユーザー情報を取得
+     *
+     * @param userId ユーザーID
+     * @return ユーザー情報
+     * @throws ResourceNotFoundException ユーザーが見つからない場合
+     */
+    fun getCurrentUser(userId: UUID): UserResponse {
+        val user =
+            userRepository.findById(userId)
+                ?: throw ResourceNotFoundException("ユーザーが見つかりません")
+
+        return UserResponse.from(user)
     }
 }
