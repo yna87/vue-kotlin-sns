@@ -56,6 +56,28 @@ class GlobalExceptionHandler {
     }
 
     /**
+     * IllegalArgumentException のハンドリング
+     * 400 Bad Request または 401 Unauthorized を返す
+     */
+    @ExceptionHandler(IllegalArgumentException::class)
+    fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseEntity<ErrorResponse> {
+        // 認証エラーの場合は 401 Unauthorized
+        val status =
+            if (ex.message?.contains("ユーザー名またはパスワード") == true) {
+                HttpStatus.UNAUTHORIZED
+            } else {
+                HttpStatus.BAD_REQUEST
+            }
+
+        val errorResponse =
+            ErrorResponse(
+                type = if (status == HttpStatus.UNAUTHORIZED) "unauthorized" else "invalidParameter",
+                message = ex.message ?: "Invalid request",
+            )
+        return ResponseEntity.status(status).body(errorResponse)
+    }
+
+    /**
      * NoSuchElementException のハンドリング
      * 404 Not Found を返す
      */

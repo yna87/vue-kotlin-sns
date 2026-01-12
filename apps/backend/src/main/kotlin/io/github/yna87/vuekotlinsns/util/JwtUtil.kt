@@ -1,8 +1,10 @@
 package io.github.yna87.vuekotlinsns.util
 
 import io.jsonwebtoken.Claims
+import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.util.Date
@@ -17,14 +19,20 @@ class JwtUtil(
     @Value("\${jwt.secret}") private val secret: String,
     @Value("\${jwt.expiration}") private val expiration: Long,
 ) {
+    private val logger = LoggerFactory.getLogger(JwtUtil::class.java)
+
     private val secretKey: SecretKey =
         run {
             // 秘密鍵の長さチェック（最低32バイト = 256ビット）
-            require(secret.toByteArray().size >= 32) {
+            require(secret.toByteArray().size >= MIN_SECRET_LENGTH) {
                 "JWT secret must be at least 256 bits"
             }
             Keys.hmacShaKeyFor(secret.toByteArray())
         }
+
+    companion object {
+        private const val MIN_SECRET_LENGTH = 32
+    }
 
     /**
      * JWTトークンを生成
@@ -55,7 +63,11 @@ class JwtUtil(
         try {
             val claims = parseToken(token)
             UUID.fromString(claims.subject)
-        } catch (e: Exception) {
+        } catch (e: JwtException) {
+            logger.debug("Invalid JWT token", e)
+            null
+        } catch (e: IllegalArgumentException) {
+            logger.debug("Invalid UUID in token subject", e)
             null
         }
 
@@ -69,7 +81,8 @@ class JwtUtil(
         try {
             parseToken(token)
             true
-        } catch (e: Exception) {
+        } catch (e: JwtException) {
+            logger.debug("Invalid JWT token", e)
             false
         }
 
