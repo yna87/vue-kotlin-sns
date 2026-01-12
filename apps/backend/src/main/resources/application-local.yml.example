@@ -1,0 +1,15 @@
+# ローカル開発環境用の設定ファイル
+#
+# 使い方:
+# 1. このファイルを application-local.yml にコピー
+#    cp application-local.yml.example application-local.yml
+#
+# 2. JWT_SECRET を生成して設定
+#    openssl rand -base64 32
+#
+# 3. アプリケーションを起動
+#    ./gradlew bootRun --args='--spring.profiles.active=local'
+#    または IntelliJ IDEA の Run Configuration で Active profiles に 'local' を設定
+
+jwt:
+  secret: YOUR_JWT_SECRET_HERE  # openssl rand -base64 32 で生成した32文字以上の文字列

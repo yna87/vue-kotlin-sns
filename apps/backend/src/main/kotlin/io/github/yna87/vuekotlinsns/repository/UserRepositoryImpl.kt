@@ -5,8 +5,8 @@ import io.github.yna87.vuekotlinsns.table.UsersTable
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insertReturning
 import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 /**
@@ -26,33 +26,36 @@ class UserRepositoryImpl : UserRepository {
             createdAt = this[UsersTable.createdAt],
         )
 
-    @Transactional(readOnly = true)
     override fun findByUserName(userName: String): User? =
-        UsersTable
-            .selectAll()
-            .where { UsersTable.userName eq userName }
-            .map { it.toUser() }
-            .singleOrNull()
+        transaction {
+            UsersTable
+                .selectAll()
+                .where { UsersTable.userName eq userName }
+                .map { it.toUser() }
+                .singleOrNull()
+        }
 
-    @Transactional(readOnly = true)
     override fun findById(id: UUID): User? =
-        UsersTable
-            .selectAll()
-            .where { UsersTable.id eq id }
-            .map { it.toUser() }
-            .singleOrNull()
+        transaction {
+            UsersTable
+                .selectAll()
+                .where { UsersTable.id eq id }
+                .map { it.toUser() }
+                .singleOrNull()
+        }
 
-    @Transactional
     override fun create(
         userName: String,
         displayName: String,
         passwordHash: String,
     ): User =
-        UsersTable
-            .insertReturning {
-                it[UsersTable.userName] = userName
-                it[UsersTable.displayName] = displayName
-                it[UsersTable.passwordHash] = passwordHash
-            }.single()
-            .toUser()
+        transaction {
+            UsersTable
+                .insertReturning {
+                    it[UsersTable.userName] = userName
+                    it[UsersTable.displayName] = displayName
+                    it[UsersTable.passwordHash] = passwordHash
+                }.single()
+                .toUser()
+        }
 }

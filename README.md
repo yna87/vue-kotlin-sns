@@ -9,7 +9,7 @@ Vue 3 + Kotlin/Spring Boot によるシンプルな SNS アプリケーション
   - ログイン
   - ログアウト
 - 投稿機能
-  - 投稿作成（最大280文字）
+  - 投稿作成（最大 280 文字）
   - タイムライン表示（新しい順）
 
 ## 技術スタック
@@ -17,14 +17,17 @@ Vue 3 + Kotlin/Spring Boot によるシンプルな SNS アプリケーション
 ### フロントエンド (`apps/frontend`)
 
 **コアフレームワーク**
+
 - Vue 3 + TypeScript + Vite
 - Vue Router
 - TanStack Query (Vue Query)
 
 **UI/スタイリング**
+
 - Nuxt UI + Tailwind CSS v4
 
 **開発ツール**
+
 - Vitest + Storybook (テスト・コンポーネント開発)
 - ESLint + Prettier (コード品質・フォーマット)
 - pnpm (パッケージマネージャー)
@@ -32,15 +35,19 @@ Vue 3 + Kotlin/Spring Boot によるシンプルな SNS アプリケーション
 ### バックエンド (`apps/backend`)
 
 **コアフレームワーク**
+
 - Spring Boot 4.0.1 + Kotlin 2.2.20 + Java 21
 
 **データベース**
+
 - PostgreSQL + Exposed (ORM) + Flyway (マイグレーション)
 
 **認証・セキュリティ**
+
 - JWT + BCrypt
 
 **開発ツール**
+
 - Gradle (ビルドツール)
 - ktlint + detekt (コード品質・静的解析)
 
@@ -84,14 +91,34 @@ pnpm dev
 
 ### 3. バックエンド
 
+#### 3.1 環境変数の設定
+
+開発環境用の設定ファイルを作成します：
+
+```bash
+cd apps/backend/src/main/resources
+
+# テンプレートをコピー
+cp application-local.yml.example application-local.yml
+
+# JWT秘密鍵を生成
+openssl rand -base64 32
+
+# 生成された秘密鍵を application-local.yml に設定
+# jwt:
+#   secret: <生成された秘密鍵>
+```
+
+#### 3.2 アプリケーションの起動
+
 ```bash
 cd apps/backend
 
 # ビルド
 ./gradlew build
 
-# アプリケーションの起動
-./gradlew bootRun
+# アプリケーションの起動（localプロファイルを使用）
+./gradlew bootRun --args='--spring.profiles.active=local'
 ```
 
 初回起動時、Flyway がデータベースマイグレーションを自動的に実行します。
@@ -115,6 +142,8 @@ make dev-frontend
 # バックエンドのみ起動
 make dev-backend
 ```
+
+**注意:** `make dev-backend` を使用する場合は、事前に `application-local.yml` の設定が必要です。
 
 ### フロントエンド
 
@@ -148,8 +177,8 @@ pnpm type-check
 ```bash
 cd apps/backend
 
-# アプリケーションの起動
-./gradlew bootRun
+# アプリケーションの起動（localプロファイル使用）
+./gradlew bootRun --args='--spring.profiles.active=local'
 
 # ビルド
 ./gradlew build
@@ -209,10 +238,10 @@ vue-kotlin-sns/
 
 詳細な設計ドキュメントは `docs/` ディレクトリにあります：
 
-- [ER図](docs/er-diagram.md) - データベース設計
-- [API仕様](docs/open-api.yaml) - OpenAPI 3.0形式のAPI仕様
+- [ER 図](docs/er-diagram.md) - データベース設計
+- [API 仕様](docs/open-api.yaml) - OpenAPI 3.0 形式の API 仕様
 - [画面設計](docs/screens/README.md) - 画面構成と遷移
-- [認証シーケンス](docs/sequences/authentication.md) - JWT認証のシーケンス図
+- [認証シーケンス](docs/sequences/authentication.md) - JWT 認証のシーケンス図
 
 ## ライセンス
 

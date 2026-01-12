@@ -10,7 +10,6 @@ import io.github.yna87.vuekotlinsns.repository.UserRepository
 import io.github.yna87.vuekotlinsns.util.JwtUtil
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 /**
  * 認証サービス
@@ -29,7 +28,6 @@ class AuthService(
      * @return 認証レスポンス（JWTトークンとユーザー情報）
      * @throws DuplicateResourceException ユーザー名が既に存在する場合
      */
-    @Transactional
     fun signup(request: SignupRequest): AuthResponse {
         // ユーザー名の重複チェック
         if (userRepository.findByUserName(request.userName) != null) {
@@ -63,7 +61,6 @@ class AuthService(
      * @return 認証レスポンス（JWTトークンとユーザー情報）
      * @throws UnauthorizedException ユーザー名またはパスワードが正しくない場合
      */
-    @Transactional(readOnly = true)
     fun login(request: LoginRequest): AuthResponse {
         // ユーザー名でユーザーを検索
         val user =

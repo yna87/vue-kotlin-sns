@@ -7,7 +7,7 @@ help: ## ヘルプメッセージを表示
 dev: ## フロントエンドとバックエンドを同時に起動
 	@printf "Starting backend and frontend...\n"
 	@trap 'kill 0' INT; \
-	(cd apps/backend && ./gradlew bootRun 2>&1 | sed "s/^/[BACKEND] /") & \
+	(cd apps/backend && ./gradlew bootRun --args='--spring.profiles.active=local' 2>&1 | sed "s/^/[BACKEND] /") & \
 	(cd apps/frontend && pnpm run dev 2>&1 | sed "s/^/[FRONTEND] /") & \
 	wait
 
@@ -17,4 +17,4 @@ dev-frontend: ## フロントエンドのみ起動
 
 dev-backend: ## バックエンドのみ起動
 	@printf "Starting backend...\n"
-	@cd apps/backend && ./gradlew bootRun
+	@cd apps/backend && ./gradlew bootRun --args='--spring.profiles.active=local'
