@@ -1,11 +1,13 @@
 import { healthApi } from '@/api/health'
 import { postsApi } from '@/api/posts'
+import { authApi } from '@/api/auth'
 import { merge } from 'es-toolkit'
 import type { DeepPartial } from '@/types/utils'
 
 export interface ApiContext {
   health: typeof healthApi
   posts: typeof postsApi
+  auth: typeof authApi
 }
 
 export const ApiContextKey: InjectionKey<ApiContext> = Symbol('ApiContext')
@@ -18,6 +20,7 @@ export function provideApi(mock: DeepPartial<ApiContext> = {}): void {
   const defaultContext: ApiContext = {
     health: healthApi,
     posts: postsApi,
+    auth: authApi,
   }
 
   const context = merge(defaultContext, mock)
