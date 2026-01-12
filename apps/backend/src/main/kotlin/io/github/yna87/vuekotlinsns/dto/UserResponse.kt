@@ -12,12 +12,11 @@ data class UserResponse(
     val displayName: String,
 ) {
     companion object {
-        fun from(user: User): UserResponse {
-            return UserResponse(
+        fun from(user: User): UserResponse =
+            UserResponse(
                 id = user.id,
                 userName = user.userName,
                 displayName = user.displayName,
             )
-        }
     }
 }

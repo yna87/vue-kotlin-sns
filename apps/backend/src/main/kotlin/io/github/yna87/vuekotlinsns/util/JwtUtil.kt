@@ -17,13 +17,14 @@ class JwtUtil(
     @Value("\${jwt.secret}") private val secret: String,
     @Value("\${jwt.expiration}") private val expiration: Long,
 ) {
-    private val secretKey: SecretKey = run {
-        // 秘密鍵の長さチェック（最低32バイト = 256ビット）
-        require(secret.toByteArray().size >= 32) {
-            "JWT secret must be at least 256 bits"
+    private val secretKey: SecretKey =
+        run {
+            // 秘密鍵の長さチェック（最低32バイト = 256ビット）
+            require(secret.toByteArray().size >= 32) {
+                "JWT secret must be at least 256 bits"
+            }
+            Keys.hmacShaKeyFor(secret.toByteArray())
         }
-        Keys.hmacShaKeyFor(secret.toByteArray())
-    }
 
     /**
      * JWTトークンを生成
@@ -35,7 +36,8 @@ class JwtUtil(
         val now = Date()
         val expiryDate = Date(now.time + expiration)
 
-        return Jwts.builder()
+        return Jwts
+            .builder()
             .subject(userId.toString())
             .issuedAt(now)
             .expiration(expiryDate)
@@ -49,14 +51,13 @@ class JwtUtil(
      * @param token JWTトークン
      * @return ユーザーID、トークンが無効な場合はnull
      */
-    fun getUserIdFromToken(token: String): UUID? {
-        return try {
+    fun getUserIdFromToken(token: String): UUID? =
+        try {
             val claims = parseToken(token)
             UUID.fromString(claims.subject)
         } catch (e: Exception) {
             null
         }
-    }
 
     /**
      * トークンの有効性を検証
@@ -64,23 +65,22 @@ class JwtUtil(
      * @param token JWTトークン
      * @return 有効な場合true、無効な場合false
      */
-    fun validateToken(token: String): Boolean {
-        return try {
+    fun validateToken(token: String): Boolean =
+        try {
             parseToken(token)
             true
         } catch (e: Exception) {
             false
         }
-    }
 
     /**
      * トークンをパースしてClaimsを取得（内部用）
      */
-    private fun parseToken(token: String): Claims {
-        return Jwts.parser()
+    private fun parseToken(token: String): Claims =
+        Jwts
+            .parser()
             .verifyWith(secretKey)
             .build()
             .parseSignedClaims(token)
             .payload
-    }
 }

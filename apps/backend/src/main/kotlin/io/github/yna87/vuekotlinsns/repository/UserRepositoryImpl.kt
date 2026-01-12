@@ -27,36 +27,32 @@ class UserRepositoryImpl : UserRepository {
         )
 
     @Transactional(readOnly = true)
-    override fun findByUserName(userName: String): User? {
-        return UsersTable
+    override fun findByUserName(userName: String): User? =
+        UsersTable
             .selectAll()
             .where { UsersTable.userName eq userName }
             .map { it.toUser() }
             .singleOrNull()
-    }
 
     @Transactional(readOnly = true)
-    override fun findById(id: UUID): User? {
-        return UsersTable
+    override fun findById(id: UUID): User? =
+        UsersTable
             .selectAll()
             .where { UsersTable.id eq id }
             .map { it.toUser() }
             .singleOrNull()
-    }
 
     @Transactional
     override fun create(
         userName: String,
         displayName: String,
         passwordHash: String,
-    ): User {
-        return UsersTable
+    ): User =
+        UsersTable
             .insertReturning {
                 it[UsersTable.userName] = userName
                 it[UsersTable.displayName] = displayName
                 it[UsersTable.passwordHash] = passwordHash
-            }
-            .single()
+            }.single()
             .toUser()
-    }
 }
