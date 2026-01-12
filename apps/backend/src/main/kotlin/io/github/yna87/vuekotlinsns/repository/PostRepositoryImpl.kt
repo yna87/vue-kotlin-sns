@@ -27,9 +27,8 @@ class PostRepositoryImpl : PostRepository {
             PostsTable
                 .insertReturning {
                     it[PostsTable.content] = content
-                    // id, createdAtはDB側のDEFAULT値を使用
-                }
-                .single()
+                    // createdAtはDB側のDEFAULT値を使用
+                }.single()
                 .toPost()
         }
 
