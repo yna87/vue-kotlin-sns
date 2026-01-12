@@ -17,6 +17,9 @@ importers:
       '@tanstack/vue-query':
         specifier: ^5.92.5
         version: 5.92.5(vue@3.5.26(typescript@5.9.3))
+      '@vueuse/core':
+        specifier: ^14.1.0
+        version: 14.1.0(vue@3.5.26(typescript@5.9.3))
       axios:
         specifier: ^1.13.2
         version: 1.13.2
