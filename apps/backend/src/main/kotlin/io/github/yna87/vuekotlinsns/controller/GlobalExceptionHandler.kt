@@ -2,6 +2,7 @@ package io.github.yna87.vuekotlinsns.controller
 
 import io.github.yna87.vuekotlinsns.dto.ErrorResponse
 import io.github.yna87.vuekotlinsns.dto.FieldError
+import io.github.yna87.vuekotlinsns.exception.ApplicationException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 /**
  * グローバル例外ハンドラー
- * アプリケーション全体の例外を一元的に処理
+ * アプリケーション全体の例外を一元的に処理し、Open API仕様に準拠したエラーレスポンスを返す
  */
 @RestControllerAdvice
 class GlobalExceptionHandler {
@@ -27,13 +28,13 @@ class GlobalExceptionHandler {
         val errorResponse =
             ErrorResponse(
                 type = "parseError",
-                message = "Invalid request body. Please check required fields and data types.",
+                message = "リクエストボディが不正です。必須フィールドとデータ型を確認してください。",
             )
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse)
     }
 
     /**
-     * バリデーションエラーのハンドリング
+     * バリデーションエラーのハンドリング（Bean Validation）
      * 400 Bad Request を返す
      */
     @ExceptionHandler(MethodArgumentNotValidException::class)
@@ -48,47 +49,32 @@ class GlobalExceptionHandler {
 
         val errorResponse =
             ErrorResponse(
-                type = "invalidParameter",
-                message = "One or more fields have invalid values",
+                type = "validationError",
+                message = "1つ以上のフィールドに不正な値が含まれています",
                 details = fieldErrors,
             )
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse)
     }
 
     /**
-     * IllegalArgumentException のハンドリング
-     * 400 Bad Request または 401 Unauthorized を返す
+     * アプリケーション例外のハンドリング
+     * カスタム例外階層（ApplicationException）を統一的に処理
+     * エラータイプとHTTPステータスは例外クラスで定義されている
      */
-    @ExceptionHandler(IllegalArgumentException::class)
-    fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseEntity<ErrorResponse> {
-        // 認証エラーの場合は 401 Unauthorized
-        val status =
-            if (ex.message?.contains("ユーザー名またはパスワード") == true) {
-                HttpStatus.UNAUTHORIZED
-            } else {
-                HttpStatus.BAD_REQUEST
-            }
+    @ExceptionHandler(ApplicationException::class)
+    fun handleApplicationException(ex: ApplicationException): ResponseEntity<ErrorResponse> {
+        // 認証エラー以外はログに出力（デバッグ用）
+        if (ex.status != HttpStatus.UNAUTHORIZED) {
+            logger.warn("Application exception occurred: ${ex.errorType} - ${ex.message}")
+        }
 
         val errorResponse =
             ErrorResponse(
-                type = if (status == HttpStatus.UNAUTHORIZED) "unauthorized" else "invalidParameter",
-                message = ex.message ?: "Invalid request",
+                type = ex.errorType,
+                message = ex.message ?: "エラーが発生しました",
+                details = ex.details,
             )
-        return ResponseEntity.status(status).body(errorResponse)
-    }
-
-    /**
-     * NoSuchElementException のハンドリング
-     * 404 Not Found を返す
-     */
-    @ExceptionHandler(NoSuchElementException::class)
-    fun handleNotFoundException(ex: NoSuchElementException): ResponseEntity<ErrorResponse> {
-        val errorResponse =
-            ErrorResponse(
-                type = "notFound",
-                message = ex.message ?: "Resource not found",
-            )
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse)
+        return ResponseEntity.status(ex.status).body(errorResponse)
     }
 
     /**
@@ -104,7 +90,7 @@ class GlobalExceptionHandler {
         val errorResponse =
             ErrorResponse(
                 type = "internalError",
-                message = "An unexpected error occurred. Please try again later.",
+                message = "予期しないエラーが発生しました。しばらくしてから再度お試しください。",
             )
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse)
     }

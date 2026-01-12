@@ -101,12 +101,12 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
                 type: validationError
-                message: One or more fields have invalid values
+                message: 1つ以上のフィールドに不正な値が含まれています
                 details:
                   - field: userName
-                    message: userName must be between 3 and 50 characters
+                    message: ユーザー名は3文字以上50文字以内で入力してください
                   - field: password
-                    message: password must be at least 8 characters
+                    message: パスワードは8文字以上で入力してください
         "409":
           description: ユーザー名が既に使用されています
           content:
@@ -115,7 +115,7 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
                 type: duplicate
-                message: User name already exists
+                message: ユーザー名は既に使用されています
 
   /auth/login:
     post:
@@ -167,7 +167,7 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
                 type: unauthorized
-                message: Invalid user name or password
+                message: ユーザー名またはパスワードが正しくありません
 
   /auth/me:
     get:
@@ -192,7 +192,7 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
                 type: invalidToken
-                message: Token is invalid or expired
+                message: トークンが無効または期限切れです
 
   /posts:
     get:
@@ -246,10 +246,10 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
                 type: validationError
-                message: One or more fields have invalid values
+                message: 1つ以上のフィールドに不正な値が含まれています
                 details:
                   - field: content
-                    message: content must not be blank
+                    message: 投稿内容を入力してください
         "401":
           description: 認証失敗（トークンが無効または期限切れ）
           content:
@@ -258,7 +258,7 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
               example:
                 type: invalidToken
-                message: Token is invalid or expired
+                message: トークンが無効または期限切れです
 
 components:
   schemas:
@@ -322,7 +322,7 @@ components:
         message:
           type: string
           description: エラーメッセージ
-          example: One or more fields have invalid values
+          example: 1つ以上のフィールドに不正な値が含まれています
         details:
           type: array
           description: エラー詳細（バリデーションエラーなど）
@@ -339,7 +339,7 @@ components:
               message:
                 type: string
                 description: フィールド固有のエラーメッセージ
-                example: must not be blank
+                example: 入力してください
 
   securitySchemes:
     BearerAuth:

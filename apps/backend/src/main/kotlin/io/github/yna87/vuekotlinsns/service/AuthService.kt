@@ -4,6 +4,8 @@ import io.github.yna87.vuekotlinsns.dto.AuthResponse
 import io.github.yna87.vuekotlinsns.dto.LoginRequest
 import io.github.yna87.vuekotlinsns.dto.SignupRequest
 import io.github.yna87.vuekotlinsns.dto.UserResponse
+import io.github.yna87.vuekotlinsns.exception.DuplicateResourceException
+import io.github.yna87.vuekotlinsns.exception.UnauthorizedException
 import io.github.yna87.vuekotlinsns.repository.UserRepository
 import io.github.yna87.vuekotlinsns.util.JwtUtil
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -25,13 +27,13 @@ class AuthService(
      *
      * @param request サインアップリクエスト
      * @return 認証レスポンス（JWTトークンとユーザー情報）
-     * @throws IllegalArgumentException ユーザー名が既に存在する場合
+     * @throws DuplicateResourceException ユーザー名が既に存在する場合
      */
     @Transactional
     fun signup(request: SignupRequest): AuthResponse {
         // ユーザー名の重複チェック
         if (userRepository.findByUserName(request.userName) != null) {
-            throw IllegalArgumentException("ユーザー名 '${request.userName}' は既に使用されています")
+            throw DuplicateResourceException("ユーザー名は既に使用されています")
         }
 
         // パスワードをハッシュ化
@@ -59,18 +61,18 @@ class AuthService(
      *
      * @param request ログインリクエスト
      * @return 認証レスポンス（JWTトークンとユーザー情報）
-     * @throws IllegalArgumentException ユーザー名またはパスワードが正しくない場合
+     * @throws UnauthorizedException ユーザー名またはパスワードが正しくない場合
      */
     @Transactional(readOnly = true)
     fun login(request: LoginRequest): AuthResponse {
         // ユーザー名でユーザーを検索
         val user =
             userRepository.findByUserName(request.userName)
-                ?: throw IllegalArgumentException("ユーザー名またはパスワードが正しくありません")
+                ?: throw UnauthorizedException("ユーザー名またはパスワードが正しくありません")
 
         // パスワードを検証
         if (!passwordEncoder.matches(request.password, user.passwordHash)) {
-            throw IllegalArgumentException("ユーザー名またはパスワードが正しくありません")
+            throw UnauthorizedException("ユーザー名またはパスワードが正しくありません")
         }
 
         // JWTトークンを生成
