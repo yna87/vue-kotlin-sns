@@ -1,9 +1,13 @@
 import { setup, type Preview } from '@storybook/vue3-vite'
+import { createPinia } from 'pinia'
 import ui from '@nuxt/ui/vue-plugin'
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import '../src/style.css'
 
 setup((app) => {
+  const pinia = createPinia()
+
+  app.use(pinia)
   app.use(ui)
   app.use(VueQueryPlugin)
 })
