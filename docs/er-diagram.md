@@ -35,7 +35,7 @@ erDiagram
 | id | uuid | PRIMARY KEY | ユーザーID（UUID v4、アプリケーション側で生成） |
 | user_name | varchar(50) | NOT NULL, UNIQUE | ログインID（ユニーク） |
 | display_name | varchar(100) | NOT NULL | 表示名 |
-| password_hash | varchar(255) | NOT NULL | ハッシュ化されたパスワード（BCrypt） |
+| password_hash | varchar(60) | NOT NULL | ハッシュ化されたパスワード（BCrypt） |
 | created_at | timestamptz | NOT NULL, DEFAULT CURRENT_TIMESTAMP | アカウント作成日時 |
 
 #### インデックス

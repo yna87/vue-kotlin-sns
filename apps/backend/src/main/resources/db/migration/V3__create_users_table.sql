@@ -3,7 +3,7 @@ CREATE TABLE users (
     id UUID PRIMARY KEY,
     user_name VARCHAR(50) NOT NULL,
     display_name VARCHAR(100) NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(60) NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
