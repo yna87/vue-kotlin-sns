@@ -4,12 +4,25 @@
 # 1. このファイルを application-local.yml にコピー
 #    cp application-local.yml.example application-local.yml
 #
-# 2. JWT_SECRET を生成して設定
+# 2. JWT秘密鍵を生成して設定
 #    openssl rand -base64 32
 #
-# 3. アプリケーションを起動
+# 3. 必要に応じてデータベース接続情報を編集
+#
+# 4. アプリケーションを起動
 #    ./gradlew bootRun --args='--spring.profiles.active=local'
 #    または IntelliJ IDEA の Run Configuration で Active profiles に 'local' を設定
 
 jwt:
   secret: YOUR_JWT_SECRET_HERE  # openssl rand -base64 32 で生成した32文字以上の文字列
+
+# データベース接続をカスタマイズする場合は以下のコメントを外して編集
+#spring:
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/vue_kotlin_sns
+#    username: postgres
+#    password: your_password
+
+# CORS設定をカスタマイズする場合は以下のコメントを外して編集
+#cors:
+#  allowed-origins: http://localhost:5173

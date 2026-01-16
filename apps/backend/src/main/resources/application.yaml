@@ -2,16 +2,16 @@ spring:
   application:
     name: backend
   datasource:
-    url: jdbc:postgresql://localhost:5432/vue_kotlin_sns
-    username: yna
-    password:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/vue_kotlin_sns}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:}
     driver-class-name: org.postgresql.Driver
   flyway:
     enabled: true
     baseline-on-migrate: true
 
 cors:
-  allowed-origins: http://localhost:5173
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
 
 jwt:
   secret: ${JWT_SECRET}
