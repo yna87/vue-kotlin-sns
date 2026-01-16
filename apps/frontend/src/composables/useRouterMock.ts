@@ -1,5 +1,6 @@
 import {
   routerKey,
+  routeLocationKey,
   createMemoryHistory,
   createRouter,
   type Router,
@@ -52,4 +53,5 @@ export function provideRouterMock(mock: Partial<RouterMethods> = {}): void {
 
   // Vue Router の Symbol キーを使って provide
   provide(routerKey, router)
+  provide(routeLocationKey, shallowReactive(router.currentRoute.value))
 }
