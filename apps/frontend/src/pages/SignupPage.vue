@@ -29,7 +29,9 @@ const goToLogin = () => {
   >
     <div class="w-full max-w-md space-y-8">
       <div>
-        <h1 class="text-center text-3xl font-bold text-gray-900">サインアップ</h1>
+        <h1 class="text-center text-3xl font-bold text-gray-900">
+          サインアップ
+        </h1>
       </div>
 
       <SignupForm
