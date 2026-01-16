@@ -20,6 +20,14 @@ const formatDate = (dateString: string) => {
 <template>
   <UCard>
     <div class="space-y-2">
+      <div class="space-y-1">
+        <p class="font-semibold text-gray-900">
+          {{ post.user.displayName }}
+        </p>
+        <p class="text-sm text-gray-500">
+          @{{ post.user.userName }}
+        </p>
+      </div>
       <p class="text-gray-900 whitespace-pre-wrap break-words">
         {{ post.content }}
       </p>

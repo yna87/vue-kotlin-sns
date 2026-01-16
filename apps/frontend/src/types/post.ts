@@ -1,3 +1,5 @@
+import type { User } from './user'
+
 /**
  * 投稿型
  */
@@ -8,6 +10,8 @@ export interface Post {
   content: string
   /** 投稿日時 */
   createdAt: string
+  /** 投稿者情報 */
+  user: User
 }
 
 /**
