@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/vue-query'
+import { useMutation, useQuery } from '@tanstack/vue-query'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useApi } from './useApi'
@@ -35,5 +35,26 @@ export function useSignupMutation() {
       authStore.login(response.token, response.user)
       router.push({ name: 'timeline' })
     },
+  })
+}
+
+/**
+ * 現在のユーザー情報を取得するQuery
+ * アプリ起動時にトークンからユーザー情報を復元する
+ */
+export function useCurrentUserQuery() {
+  const { auth: authApi } = useApi()
+  const authStore = useAuthStore()
+
+  return useQuery({
+    queryKey: ['currentUser'],
+    queryFn: async () => {
+      const user = await authApi.getCurrentUser()
+      authStore.setUser(user)
+      return user
+    },
+    enabled: authStore.isAuthenticated && !authStore.user,
+    retry: false,
+    staleTime: Infinity,
   })
 }
