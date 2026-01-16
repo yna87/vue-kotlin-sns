@@ -3,6 +3,7 @@ import { postsApi } from '@/api/posts'
 import { authApi } from '@/api/auth'
 import { merge } from 'es-toolkit'
 import type { DeepPartial } from '@/types/utils'
+import { injectLocal, provideLocal } from '@vueuse/core'
 
 export interface ApiContext {
   health: typeof healthApi
@@ -25,14 +26,14 @@ export function provideApi(mock: DeepPartial<ApiContext> = {}): void {
 
   const context = merge(defaultContext, mock)
 
-  provide(ApiContextKey, context)
+  provideLocal(ApiContextKey, context)
 }
 
 /**
  * APIコンテキストを取得する
  */
 export function useApi(): ApiContext {
-  const api = inject(ApiContextKey)
+  const api = injectLocal(ApiContextKey)
   if (!api) {
     throw new Error('ApiContext is not provided')
   }
