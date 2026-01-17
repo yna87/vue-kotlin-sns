@@ -20,6 +20,11 @@ const meta = {
         id: '1',
         content: post.content,
         createdAt: new Date().toISOString(),
+        user: {
+          id: 'user1',
+          userName: 'sampleuser',
+          displayName: 'サンプルユーザー',
+        },
       }
     }),
     routerPush: fn(),

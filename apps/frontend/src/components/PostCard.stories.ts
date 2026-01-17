@@ -10,6 +10,11 @@ const meta = {
       id: '1',
       content: 'これはサンプルの投稿です。',
       createdAt: new Date().toISOString(),
+      user: {
+        id: 'user1',
+        userName: 'sampleuser',
+        displayName: 'サンプルユーザー',
+      },
     },
   },
   render: (args) => ({

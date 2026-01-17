@@ -11,11 +11,21 @@ const meta = {
         id: '1',
         content: 'これはサンプルの投稿です。',
         createdAt: new Date().toISOString(),
+        user: {
+          id: 'user1',
+          userName: 'sampleuser',
+          displayName: 'サンプルユーザー',
+        },
       },
       {
         id: '2',
         content: 'これは別のサンプル投稿です。',
         createdAt: new Date().toISOString(),
+        user: {
+          id: 'user2',
+          userName: 'anotheruser',
+          displayName: '別のユーザー',
+        },
       },
     ],
     isLoading: false,
