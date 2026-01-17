@@ -29,6 +29,10 @@ class SecurityConfig(
     @Value("\${cors.allowed-origins}")
     private lateinit var allowedOrigins: String
 
+    companion object {
+        private const val PREFLIGHT_MAX_AGE_SECONDS = 3600L
+    }
+
     /**
      * パスワードエンコーダー（BCrypt）を提供
      *
@@ -54,7 +58,7 @@ class SecurityConfig(
             )
         configuration.allowCredentials = true
         // プリフライトリクエストのキャッシュ時間（秒）
-        configuration.maxAge = 3600L
+        configuration.maxAge = PREFLIGHT_MAX_AGE_SECONDS
 
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)
