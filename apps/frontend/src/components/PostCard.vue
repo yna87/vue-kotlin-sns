@@ -18,22 +18,18 @@ const formatDate = (dateString: string) => {
 </script>
 
 <template>
-  <UCard>
-    <div class="space-y-2">
-      <div class="space-y-1">
-        <p class="font-semibold text-gray-900">
-          {{ post.user.displayName }}
-        </p>
-        <p class="text-sm text-gray-500">
-          @{{ post.user.userName }}
-        </p>
-      </div>
-      <p class="text-gray-900 whitespace-pre-wrap break-words">
-        {{ post.content }}
+  <div class="border border-gray-200 shadow rounded-md p-3 space-y-4">
+    <div>
+      <p class="text font-bold text-gray-900">
+        {{ post.user.displayName }}
       </p>
-      <p class="text-sm text-gray-500">
-        {{ formatDate(post.createdAt) }}
-      </p>
+      <p class="text-sm text-gray-500">@{{ post.user.userName }}</p>
     </div>
-  </UCard>
+    <p class="text-lg text-gray-900 whitespace-pre-wrap wrap-break-word">
+      {{ post.content }}
+    </p>
+    <p class="text-sm text-gray-500">
+      {{ formatDate(post.createdAt) }}
+    </p>
+  </div>
 </template>

@@ -2,15 +2,19 @@
 import { useAuthStore } from '@/stores/auth'
 import { useRouter, useRoute } from 'vue-router'
 import { computed } from 'vue'
+import { useCurrentUserQuery } from '@/composables/useAuth'
 
 const authStore = useAuthStore()
 const router = useRouter()
 const route = useRoute()
 
+// アプリ起動時にトークンからユーザー情報を復元
+useCurrentUserQuery()
+
 // 認証画面ではボタンを非表示
 const AUTH_PAGES = ['login', 'signup']
 const isAuthPage = computed(() =>
-  route.name ? AUTH_PAGES.includes(route.name as string) : false
+  route.name ? AUTH_PAGES.includes(route.name as string) : false,
 )
 
 const logout = () => {
