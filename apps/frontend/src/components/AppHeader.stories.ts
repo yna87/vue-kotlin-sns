@@ -4,10 +4,13 @@ import AppHeader from './AppHeader.vue'
 import { expect, fn } from 'storybook/test'
 import { useAuthStore } from '@/stores/auth'
 import { provideRouterMock } from '@/composables/useRouterMock'
+import type { User } from '@/types/user'
+import { provideApi } from '@/composables/useApi'
 
 type CustomArgs = InstanceType<typeof AppHeader> & {
   routerPush: ReturnType<typeof fn>
   isLoggedIn: boolean
+  getCurrentUser: () => Promise<User>
 }
 
 const meta = {
@@ -16,6 +19,11 @@ const meta = {
   args: {
     routerPush: fn(),
     isLoggedIn: true,
+    getCurrentUser: fn(async () => ({
+      id: 'user-id',
+      userName: 'user_name',
+      displayName: 'テストユーザー',
+    })),
   },
   render: (args) => ({
     components: { AppHeader },
@@ -23,14 +31,19 @@ const meta = {
       const authStore = useAuthStore()
       if (args.isLoggedIn) {
         authStore.login('mock-jwt-token', {
-          id: '1',
-          userName: 'test_user',
-          displayName: 'Test User',
+          id: 'user-id',
+          userName: 'user_name',
+          displayName: 'テストユーザー',
         })
       } else {
         authStore.logout()
       }
 
+      provideApi({
+        auth: {
+          getCurrentUser: args.getCurrentUser,
+        },
+      })
       provideRouterMock({ push: args.routerPush })
 
       return { args }
